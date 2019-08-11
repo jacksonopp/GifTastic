@@ -1,5 +1,9 @@
 const topics = ["Hannibal Buress", "Amy Pohler", "John Mullaney"];
 
+renderButtons();
+queryClick();
+
+//sets up the event listener for adding search terms
 document.getElementById("button-addon2").addEventListener("click", function () {
     let searchItem;
     searchItem = document.getElementById("search-bar").value;
@@ -10,6 +14,18 @@ document.getElementById("button-addon2").addEventListener("click", function () {
     }
 })
 
+//adds the search terms
+function renderButtons() {
+    document.getElementById("query-buttons").innerHTML = "";
+    topics.forEach(function (item) {
+        button = document.createElement("button");
+        button.classList.add("btn", "btn-outline-warning", "mr-1", "query-button");
+        button.innerText = item;
+        document.getElementById("query-buttons").append(button);
+    })
+}
+
+//sets up the event listener for the gify API query
 function queryClick() {
     document.querySelectorAll(".query-button").forEach(function (node) {
         node.addEventListener("click", function (event) {
@@ -18,19 +34,10 @@ function queryClick() {
     })
 }
 
-function renderButtons() {
-    document.getElementById("query-buttons").innerHTML = "";
-    topics.forEach(function (item) {
-        button = document.createElement("button");
-        button.classList.add("btn", "btn-outline-secondary", "mr-1", "query-button");
-        button.innerText = item;
-        document.getElementById("query-buttons").append(button);
-    })
-}
-
+//executes the search query
 function querySearch() {
     let query = event.target.innerText;
-    const queryURL = "https://api.giphy.com/v1/gifs/search?api_key=EBEbmryRHsMs8j6Vmrpesd0DPbM5wOyi&q=" + query + "&limit=25&offset=0&rating=G&rating=PG&lang=en";
+    const queryURL = "https://api.giphy.com/v1/gifs/search?api_key=EBEbmryRHsMs8j6Vmrpesd0DPbM5wOyi&q=" + query + "&limit=10&offset=0&rating=G&rating=PG&lang=en";
     console.log(queryURL);
     fetch(queryURL)
         .then(function (result) {
@@ -47,11 +54,12 @@ function querySearch() {
         })
 }
 
+//creates the giphs and click to play/pause functionality
 function createGifElements(rating, gifStill, gifMoving) {
 
 
     card = document.createElement("div");
-    card.classList.add("card", "mr-1", "mb-1");
+    card.classList.add("card", "mr-3", "mb-3", "text-white", "bg-dark");
 
     gif = document.createElement("img");
     gif.setAttribute("src", gifStill);
@@ -66,8 +74,8 @@ function createGifElements(rating, gifStill, gifMoving) {
     cardBody.classList.add("card-body");
     card.append(cardBody);
 
-    ratingEl = document.createElement("h6");
-    ratingEl.classList.add("card-subtitle", "mb-2", "text-muted")
+    ratingEl = document.createElement("p");
+    ratingEl.classList.add("card-text")
     ratingEl.innerText = "Rating: " + rating;
     cardBody.append(ratingEl);
 
