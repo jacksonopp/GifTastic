@@ -64,13 +64,13 @@ function querySearch() {
             document.getElementById("gif-div").innerHTML = "";
 
             data.forEach(function (item) {
-                createGifElements(item.rating, item.images.fixed_height_still.url, item.images.fixed_height.url, item.source_tld);
+                createGifElements(item.rating, item.images.fixed_height_still.url, item.images.fixed_height.url, item.url);
             })
         })
 }
 
 //creates the giphs and click to play/pause functionality
-function createGifElements(rating, gifStill, gifMoving) {
+function createGifElements(rating, gifStill, gifMoving, giphyURL) {
 
 
     card = document.createElement("div");
@@ -101,6 +101,15 @@ function createGifElements(rating, gifStill, gifMoving) {
     ratingEl.classList.add("card-text");
     ratingEl.innerText = "Rating: " + rating;
     cardBody.append(ratingEl);
+
+    linkP = document.createElement("p");
+    linkP.classList.add("card-text");
+    linkA = document.createElement("a");
+    linkA.setAttribute("href", giphyURL);
+    linkA.setAttribute("target", "_blank");
+    linkA.innerHTML = '<i class="fa fa-external-link" aria-hidden="true"></i>' + " View on Giphy";
+    linkP.append(linkA);
+    cardBody.append(linkP);
 
 
     document.getElementById("gif-div").append(card);
