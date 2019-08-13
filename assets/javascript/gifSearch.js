@@ -1,5 +1,20 @@
-const topics = ["Hannibal Buress", "Amy Pohler", "John Mullaney"];
+const topics = ["Hannibal Buress", "Amy Pohler", "John Mullaney", "Chris Rock", "Jerry Seinfeld", "Kevin Hart", "George Carlin", "Eddie Murphy", "Dave Chappelle", "Richord Pryor"];
 
+let movingToggle = document.getElementById("moving-toggle");
+movingToggle.setAttribute("data-state", "off");
+
+function movingToggleCheck() {
+    movingToggle.addEventListener("click", function () {
+        let movingState = event.target.getAttribute("data-state");
+        if (movingState === "off") {
+            event.target.setAttribute("data-state", "on");
+        } else if (movingState === "on") {
+            event.target.setAttribute("data-state", "off");
+        }
+    })
+}
+
+movingToggleCheck();
 renderButtons();
 queryClick();
 
@@ -19,7 +34,7 @@ function renderButtons() {
     document.getElementById("query-buttons").innerHTML = "";
     topics.forEach(function (item) {
         button = document.createElement("button");
-        button.classList.add("btn", "btn-outline-warning", "mr-1", "query-button");
+        button.classList.add("btn", "btn-outline-warning", "mr-1", "mb-1", "query-button");
         button.innerText = item;
         document.getElementById("query-buttons").append(button);
     })
@@ -49,7 +64,7 @@ function querySearch() {
             document.getElementById("gif-div").innerHTML = "";
 
             data.forEach(function (item) {
-                createGifElements(item.rating, item.images.fixed_height_still.url, item.images.fixed_height.url);
+                createGifElements(item.rating, item.images.fixed_height_still.url, item.images.fixed_height.url, item.source_tld);
             })
         })
 }
@@ -62,10 +77,18 @@ function createGifElements(rating, gifStill, gifMoving) {
     card.classList.add("card", "mr-3", "mb-3", "text-white", "bg-dark");
 
     gif = document.createElement("img");
-    gif.setAttribute("src", gifStill);
     gif.setAttribute("data-still", gifStill);
     gif.setAttribute("data-moving", gifMoving);
-    gif.setAttribute("data-state", "still");
+
+
+    if (movingToggle.getAttribute("data-state") === "off") {
+        gif.setAttribute("src", gifStill);
+        gif.setAttribute("data-state", "still");
+    } else if (movingToggle.getAttribute("data-state") === "on") {
+        gif.setAttribute("src", gifMoving);
+        gif.setAttribute("dta-state", "moving");
+    }
+
     gif.classList.add("gif", "card-img-top");
 
     card.append(gif);
@@ -75,7 +98,7 @@ function createGifElements(rating, gifStill, gifMoving) {
     card.append(cardBody);
 
     ratingEl = document.createElement("p");
-    ratingEl.classList.add("card-text")
+    ratingEl.classList.add("card-text");
     ratingEl.innerText = "Rating: " + rating;
     cardBody.append(ratingEl);
 
@@ -93,5 +116,5 @@ function createGifElements(rating, gifStill, gifMoving) {
             event.target.setAttribute("data-state", "still");
         }
     })
-
 }
+
