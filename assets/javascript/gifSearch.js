@@ -1,7 +1,11 @@
 const topics = ["Hannibal Buress", "Amy Pohler", "John Mullaney", "Chris Rock", "Jerry Seinfeld", "Kevin Hart", "George Carlin", "Eddie Murphy", "Dave Chappelle", "Richord Pryor"];
 
+//sets up the state of the auto-play toggle
 let movingToggle = document.getElementById("moving-toggle");
 movingToggle.setAttribute("data-state", "off");
+
+//sets up the state of if gifs are loaded
+let gifsLoaded = false;
 
 function movingToggleCheck() {
     movingToggle.addEventListener("click", function () {
@@ -45,6 +49,8 @@ function queryClick() {
     document.querySelectorAll(".query-button").forEach(function (node) {
         node.addEventListener("click", function (event) {
             querySearch();
+            gifsLoaded = true;
+            console.log(gifsLoaded);
         })
     })
 }
@@ -66,6 +72,13 @@ function querySearch() {
             data.forEach(function (item) {
                 createGifElements(item.rating, item.images.fixed_height_still.url, item.images.fixed_height.url, item.url);
             })
+
+            document.getElementById("moving-toggle").addEventListener("click", function () {
+                data.forEach(function(item){
+                    playAll();
+                })
+            })
+
         })
 }
 
@@ -127,3 +140,21 @@ function createGifElements(rating, gifStill, gifMoving, giphyURL) {
     })
 }
 
+//plays and pauses all at the same time
+function playAll() {
+    let toggleState = document.getElementById("moving-toggle").getAttribute("data-state");
+    let gifs = document.querySelectorAll("img");
+    gifs.forEach(function(node) {
+        const gifMoving = node.getAttribute("data-moving");
+        const gifStill = node.getAttribute("data-still");
+        if (toggleState === "on") {
+            node.setAttribute("src", gifMoving);
+            node.setAttribute("data-state", "moving");
+
+        } else if (toggleState === "off") {
+            node.setAttribute("src", gifStill);
+            node.setAttribute("data-state", "still");
+        }
+    })
+    console.log(toggleState);
+}
