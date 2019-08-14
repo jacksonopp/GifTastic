@@ -4,7 +4,7 @@ https://jacksonopp.github.io/GifTastic/.
 
 # About This Project
 
-Search for gifs of your favorite comedian! If you want the gifs to automatically play when you search, toggle the auto-play switch.
+Search for gifs of your favorite comedian! If you want the gifs to automatically play when you search, or to play all gifs at once, toggle the auto-play switch.
 
 # Credits
 Auto-play toggle by Dan Klammer 
