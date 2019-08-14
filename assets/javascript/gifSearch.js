@@ -7,6 +7,7 @@ movingToggle.setAttribute("data-state", "off");
 //sets up the state of if gifs are loaded
 let gifsLoaded = false;
 
+//sets up the toggle function (so that it's visible in the html)
 function movingToggleCheck() {
     movingToggle.addEventListener("click", function () {
         let movingState = event.target.getAttribute("data-state");
@@ -18,6 +19,7 @@ function movingToggleCheck() {
     })
 }
 
+//runs the essential functions
 movingToggleCheck();
 renderButtons();
 queryClick();
@@ -47,7 +49,7 @@ function renderButtons() {
 //sets up the event listener for the gify API query
 function queryClick() {
     document.querySelectorAll(".query-button").forEach(function (node) {
-        node.addEventListener("click", function (event) {
+        node.addEventListener("click", function () {
             querySearch();
             gifsLoaded = true;
             console.log(gifsLoaded);
@@ -69,14 +71,13 @@ function querySearch() {
 
             document.getElementById("gif-div").innerHTML = "";
 
+            //actually renders the image
             data.forEach(function (item) {
                 createGifElements(item.rating, item.images.fixed_height_still.url, item.images.fixed_height.url, item.url);
             })
-
+            //actually executes the play-all function on click, but only after all the gifs are rendered
             document.getElementById("moving-toggle").addEventListener("click", function () {
-                data.forEach(function(item){
                     playAll();
-                })
             })
 
         })
@@ -84,8 +85,6 @@ function querySearch() {
 
 //creates the giphs and click to play/pause functionality
 function createGifElements(rating, gifStill, gifMoving, giphyURL) {
-
-
     card = document.createElement("div");
     card.classList.add("card", "mr-3", "mb-3", "text-white", "bg-dark");
 
@@ -93,7 +92,7 @@ function createGifElements(rating, gifStill, gifMoving, giphyURL) {
     gif.setAttribute("data-still", gifStill);
     gif.setAttribute("data-moving", gifMoving);
 
-
+    //sees if the gifs should be moving when rendered
     if (movingToggle.getAttribute("data-state") === "off") {
         gif.setAttribute("src", gifStill);
         gif.setAttribute("data-state", "still");
@@ -127,6 +126,7 @@ function createGifElements(rating, gifStill, gifMoving, giphyURL) {
 
     document.getElementById("gif-div").append(card);
 
+    //adds click to play/pause functionality
     gif.addEventListener("click", function (event) {
         let state = event.target.getAttribute("data-state");
         if (state === "still") {
@@ -140,7 +140,7 @@ function createGifElements(rating, gifStill, gifMoving, giphyURL) {
     })
 }
 
-//plays and pauses all at the same time
+//plays and pauses all gifs at the same time
 function playAll() {
     let toggleState = document.getElementById("moving-toggle").getAttribute("data-state");
     let gifs = document.querySelectorAll("img");
@@ -156,5 +156,5 @@ function playAll() {
             node.setAttribute("data-state", "still");
         }
     })
-    console.log(toggleState);
+    // console.log(toggleState);
 }
